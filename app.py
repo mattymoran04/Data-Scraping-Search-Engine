@@ -23,7 +23,7 @@ def index():
 @app.route('/browse')
 def browse():
     # Get the path from the request arguments, defaulting to a specific directory
-    path = request.args.get('path', r"C:\Users\matty\OneDrive\Documents\CSC1028\jsonFiles")
+    path = request.args.get('path', "YOUR_PATH_NAME")
     
     # Initialize an empty list to store directory contents
     contents = []
@@ -298,7 +298,7 @@ def generateResults(query, search_type):
 # This function finds the folder path in which to store data based on a given SIC code.
 def find_SIC_section_path(sicCode):
     # Define the path to the directory where folders containing data for different SIC code sections are stored.
-    folder_path = r"C:\Users\matty\OneDrive\Documents\CSC1028\jsonFiles\business"
+    folder_path = "YOUR_PATH_NAME"
     
     # List all the subfolders (SIC code sections) in the specified directory.
     subfolders = [f for f in os.listdir(folder_path) if os.path.isdir(os.path.join(folder_path, f))]
@@ -355,7 +355,7 @@ def person_query(query):
         i += 1
 
     #Define folder path and filename
-    folder_path = r"C:\Users\matty\OneDrive\Documents\CSC1028\jsonFiles"
+    folder_path = "YOUR_PATH_NAME"
     file_name = fileName + ".json"
     file_path1 = os.path.join(folder_path, file_name)
 
