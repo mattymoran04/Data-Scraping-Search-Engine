@@ -12,7 +12,7 @@ client = OpenAI()
 engine = Yahoo()
 res = search_engines.results
 
-#creatign a Flask application instance
+#creating a Flask application instance
 app = Flask(__name__)
 
 #Welcome page, with a link to the search page
@@ -22,16 +22,32 @@ def index():
 
 @app.route('/browse')
 def browse():
-    path = request.args.get('path' ,r"C:\Users\matty\OneDrive\Documents\CSC1028\jsonFiles")
+    # Get the path from the request arguments, defaulting to a specific directory
+    path = request.args.get('path', r"C:\Users\matty\OneDrive\Documents\CSC1028\jsonFiles")
+    
+    # Initialize an empty list to store directory contents
     contents = []
+    
+    # Get the list of files and directories in the specified path
     files = os.listdir(path)
+    
+    # Iterate over each item in the directory
     for item in files:
+        # Create the full path of the item
         item_path = os.path.join(path, item)
+        
+        # Check if the item is a directory
         if os.path.isdir(item_path):
+            # If it's a directory, add it to the contents list with type 'directory'
             contents.append({'name': item, 'type': 'directory'})
+        # Check if the item is a JSON file
         elif item.endswith('.json'):
-            contents.append({'name': item, 'type':'json'})
+            # If it's a JSON file, add it to the contents list with type 'json'
+            contents.append({'name': item, 'type': 'json'})
+    
+    # Render the 'browse.html' template with the contents and current path
     return render_template('browse.html', contents=contents, current_path=path)
+
 
 @app.route('/view_json_file/<path:filename>')
 def view_json_file(filename):
@@ -279,27 +295,55 @@ def generateResults(query, search_type):
             
         return returnedData
     
+# This function finds the folder path in which to store data based on a given SIC code.
 def find_SIC_section_path(sicCode):
+    # Define the path to the directory where folders containing data for different SIC code sections are stored.
     folder_path = r"C:\Users\matty\OneDrive\Documents\CSC1028\jsonFiles\business"
+    
+    # List all the subfolders (SIC code sections) in the specified directory.
     subfolders = [f for f in os.listdir(folder_path) if os.path.isdir(os.path.join(folder_path, f))]
+    
+    # Initialize an empty string to store the name of the folder corresponding to the given SIC code.
     pathName = ""
+    
+    # Iterate through each subfolder (SIC code section) to find the one that matches the given SIC code.
     for folder in subfolders:
+        # Extract the range of SIC codes from the folder name.
         numRange = folder.split(" - ")
+        # Split the range into two numbers.
         numbers = numRange[0].split("-")
+        # Check if the given SIC code falls within the range of SIC codes for this folder.
         if sicCode >= int(numbers[0]) and sicCode <= int(numbers[1]):
+            # If the SIC code is within the range, store the folder name and exit the loop.
             pathName = folder
             break
+    
+    # Combine the folder path with the folder name to get the final folder path.
     finalFolder = os.path.join(folder_path, pathName)
+    
+    # Return the final folder path.
     return finalFolder
 
+# This function finds the folder name containing data for a specific SIC code within a given directory.
 def find_SIC_code(fPath, sicCode):
+    # List all the subfolders (SIC code sections) in the specified directory.
     subfolders = [f for f in os.listdir(fPath) if os.path.isdir(os.path.join(fPath, f))]
+    
+    # Initialize an empty string to store the name of the folder corresponding to the given SIC code.
     pathName = ""
+    
+    # Iterate through each subfolder (SIC code section) to find the one that matches the given SIC code.
     for folder in subfolders:
+        # Split the folder name to extract the SIC code.
         number = folder.split(" - ")
+        # Check if the SIC code matches the given SIC code.
         if sicCode == number[0]:
+            # If the SIC code matches, store the folder name and exit the loop.
             pathName = folder
+    
+    # Return the folder name corresponding to the given SIC code.
     return pathName
+
 
 def person_query(query):
     #Split the query into individual strings and concatenate them into a file name
