@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Specific Queries Page</title>
+</head>
+<body>
+    <h1>Select a Specific Query for "{{ query }}"</h1>
+    <form action="/specific_queries/{{ query }}/{{ search_type }}" method="post">
+        <select name="selected_query">
+            {% if search_type == 'person' %}
+                {% for person in people %}
+                    <option value="{{ person }}">{{ person }}</option>
+                {% endfor %}
+            {% elif search_type == 'business' %}
+                {% for business in businesses %}
+                    <option value="{{ business }}">{{ business }}</option>
+                {% endfor %}
+            {% endif %}
+        </select>
+        <input type="hidden" name="query" value="{{ query }}">
+        <input type="hidden" name="search_type" value="{{ search_type }}">
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

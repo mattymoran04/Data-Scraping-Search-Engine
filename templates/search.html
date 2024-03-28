@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Page</title>
+</head>
+<body>
+    <h1>DuckDuckGo Search</h1>
+    <form method="post" action="/search">
+        <label for="query">Search Query:</label>
+        <input type="text" id="query" name="query" required>
+        <br>
+        <input type="radio" id="person" name="search_type" value="person" checked>
+        <label for="person">Search for Person</label>
+        <br>
+        <input type="radio" id="business" name="search_type" value="business">
+        <label for="business">Search for Business</label>
+        <br>
+        <button type="submit">Search</button>
+    </form>
+</body>
+</html>
+
